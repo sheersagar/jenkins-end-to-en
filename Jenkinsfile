@@ -21,5 +21,17 @@ pipeline {
                 git branch: 'main', credentialsId: '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', url: 'https://github.com/sheersagar/jenkins-end-to-en.git'
             }
         }
+
+        stage("Build Application") {
+            steps{
+                sh "mvn clean package"
+            }
+        }
+
+        stage("Test Application") {
+            steps{
+                sh "mvn test"
+            }
+        }
     }
 }
