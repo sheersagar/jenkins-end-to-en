@@ -38,11 +38,13 @@ pipeline {
 
         stage("Sonar Qube Analysis") {
             steps{
-                // the credentials ID will be the same name that we setup in jenkins credentials
-                withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
-                    sh "mvn sonar:sonar"
+                script {
+                    // the credentials ID will be the same name that we setup in jenkins credentials
+                    withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
+                        sh "mvn sonar:sonar"
+                    }
                 }
-            }
+            }  
         }
     }
 }
