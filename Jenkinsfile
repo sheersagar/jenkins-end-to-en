@@ -18,7 +18,7 @@ pipeline {
 
         stage ("Checkout from SCM") {
             steps{
-                git branch: 'main', credentialsId: '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', url: 'https://github.com/sheersagar/jenkins-end-to-en.git'
+                git branch: 'main', credentialsId: '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', url: 'https://github.com/sheersagar/jenkins-end-to-en.git'
             }
         }
 
