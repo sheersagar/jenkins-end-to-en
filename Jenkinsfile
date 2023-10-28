@@ -8,6 +8,15 @@ pipeline {
         maven 'Maven3'
     }
 
+    environment {
+        APP_NAME = "jenkins-en-to-en"
+        RELEASE = "1.0.0"
+        DOCKER_USER = "vishv3432"
+        DOCKER_PASS = 'dockerhub'
+        IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+    }
+
     stages{
         stage ("Clean up Workspae") {
             steps{
@@ -55,5 +64,21 @@ pipeline {
                 }
             }  
         }
+
+        stage("Docker build and Push") {
+            steps {
+                script {
+                    docker.withDockerRegistry('', DOCKER_PASS) {
+                        docker_image = docker.build"${IMAGE_NAME}"
+                    }
+
+                    docker.withDockerRegistry('', DOCKER_PASS) {
+                        docker_image.push("${IMAGE_TAG}")
+                        docker_image.push('latest')
+                    }
+                }
+            }  
+        }
+
     }
 }
