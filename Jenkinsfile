@@ -68,7 +68,7 @@ pipeline {
         stage("Docker build and Push") {
             steps {
                 script {
-                    def dockerRegistryUrl = 'https://hub.docker.com/u/vishv3432'
+                    def dockerRegistryUrl = 'https://hub.docker.com'
                     docker.withDockerRegistry('', DOCKER_PASS) {
                         docker_image = docker.build("${IMAGE_NAME}")
                     }
