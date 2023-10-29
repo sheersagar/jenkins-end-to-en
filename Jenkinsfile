@@ -83,7 +83,7 @@ pipeline {
 
         stage("Build and Push Docker Image") {
             environment {
-                DOCKER_IMAGE = "vishv3432/my_custom_pipeline:${BUILD_NUMBER}"
+                DOCKER_IMAGE = "vishv3432/my-custom-pipeline:${BUILD_NUMBER}"
                 REGISTRY_CREDENTIALS = credentials('dockerhub')
             }
 
