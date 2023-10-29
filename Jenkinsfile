@@ -8,14 +8,14 @@ pipeline {
         maven 'Maven3'
     }
 
-    environment {
-        APP_NAME = "jenkins-en-to-en"
-        RELEASE = "1.0.0"
-        DOCKER_USER = "vishv3432"
-        DOCKER_PASS = 'dockerhub'
-        IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
-        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
-    }
+    //environment {
+     //   APP_NAME = "jenkins-en-to-en"
+      //  RELEASE = "1.0.0"
+      //  DOCKER_USER = "vishv3432"
+      //  DOCKER_PASS = 'dockerhub'
+      //  IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+      //  IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+    //}
 
     stages{
         stage ("Clean up Workspae") {
@@ -65,20 +65,37 @@ pipeline {
            // }  
        // }
 
-        stage("Docker build and Push") {
-            steps {
-                script {
-                    def dockerRegistryUrl = 'https://hub.docker.com'
-                    docker.withDockerRegistry('', DOCKER_PASS) {
-                        docker_image = docker.build("${IMAGE_NAME}")
-                    }
+        //stage("Docker build and Push") {
+          //  steps {
+            //    script {
+            
+//                    docker.withDockerRegistry('https://index.docker.io/v1/', DOCKER_PASS) {
+  //                      docker_image = docker.build -t ${IMAGE_NAME}
+    //                }
+//
+  //                  docker.withDockerRegistry('', DOCKER_PASS) {
+    //                    docker_image.push("${IMAGE_TAG}")
+      //                  docker_image.push('latest')
+        //            }
+          //      }
+            //}  
+        //}
 
-                    docker.withDockerRegistry('', DOCKER_PASS) {
-                        docker_image.push("${IMAGE_TAG}")
-                        docker_image.push('latest')
+        stage("Build and Push Docker Image") {
+            environment {
+                DOCKER_IMAGE = "vishv3432/my_custom_pipeline:$(BUILD_NUMBER)"
+                REGISTRY_CREDENTIALS = withCredentials('dockerhub')
+            }
+
+            steps{
+                script {
+                    sh 'docker build -t $(DOCKER_IMAGE) .'
+                    def dockerImage = docker.image("${DOCKER_IMAGE}")
+                    docker.withDockerRegistry('https://index.docker.io/v1', "dockerhub") {
+                        dockerImage.push()
                     }
                 }
-            }  
+            }
         }
 
     }
