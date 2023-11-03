@@ -16,7 +16,7 @@ pipeline {
       DOCKER_USER = "vishv3432"
       DOCKER_PASS = 'dockerhub'. // it is equal to a jenkins secret that we have set up already in Jenkins 
       //IMAGE_NAME = "${DOCKER_USER}" + '/' + "${APP_NAME}"
-      IMAGE_TAG = "${RELEASE} + ${BUILD_NUMBER}"
+      IMAGE_TAG = "${RELEASE} '+' ${BUILD_NUMBER}"
     }
 
     stages{
