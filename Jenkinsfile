@@ -89,11 +89,10 @@ pipeline {
 
             steps{
                 script {
-                    sh "docker build -t $DOCKER_IMAGE ."
+                    sh "docker build -t ${DOCKER_IMAGE} ."
                     def dockerImage = docker.image("${DOCKER_IMAGE}")
-                    withCredentials([string(credentialsId: 'docker', variable: 'dockerhub')]) {
-                        dockerImage.push()
-                    }
+                    sh "echo $REGISTRY_CREDENTIALS | docker login -u $REGISTRY_CREDENTIALS --password-stdin"
+                    dockerImage.push()
                 }
             }
         }
