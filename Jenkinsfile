@@ -89,12 +89,13 @@ pipeline {
 
             steps{
                 script {
-                sh "docker build -t ${DOCKER_IMAGE} ."
-                def dockerImage = docker.image("${DOCKER_IMAGE}")
-                withCredentials([
-                    usernamePassword(credentials: 'dockerhub', usernameVariable: USER, passwordVariable: PWD)
-                ]) {
-                    dockerImage.push() 
+                    sh "docker build -t ${DOCKER_IMAGE} ."
+                    def dockerImage = docker.image("${DOCKER_IMAGE}")
+                        withCredentials([
+                            usernamePassword(credentials: 'dockerhub', usernameVariable: USER, passwordVariable: PWD)
+                        ]) {
+                        dockerImage.push() 
+                    }
                 }
             }
         }
