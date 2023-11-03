@@ -90,14 +90,10 @@ pipeline {
             steps{
                 script {
                     sh 'docker build -t $DOCKER_IMAGE .'
-                    echo "Registry Credentials: $REGISTRY_CREDENTIALS"
+                    //echo "Registry Credentials: $REGISTRY_CREDENTIALS"
                     def dockerImage = docker.image("${DOCKER_IMAGE}")
                     docker.withRegistry('https://index.docker.io/v1', 'dockerhub') {
-                        try {
                             dockerImage.push()
-                        } catch (Exception e) {
-                            echo "Docker Push fail : ${e.message}"
-                        }
                     }
                 }
             }
