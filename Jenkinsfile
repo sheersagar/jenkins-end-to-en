@@ -8,14 +8,14 @@ pipeline {
         maven 'Maven3'
     }
 
-    //environment {
-     //   APP_NAME = "jenkins-en-to-en"
-      //  RELEASE = "1.0.0"
-      //  DOCKER_USER = "vishv3432"
-      //  DOCKER_PASS = 'dockerhub'
-      //  IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
-      //  IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
-    //}
+    environment {
+      APP_NAME = "jenkins-en-to-en"
+      RELEASE = "1.0.0"
+      DOCKER_USER = "vishv3432"
+      DOCKER_PASS = 'dockerhub'. // it is equal to a jenkins secret that we have set up already in Jenkins 
+      IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+      IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+    }
 
     stages{
         stage ("Clean up Workspae") {
@@ -82,19 +82,14 @@ pipeline {
         //}
 
         stage("Build and Push Docker Image") {
-            environment {
-                DOCKER_IMAGE = "vishv3432/my-custom-pipeline:${BUILD_NUMBER}"
-                REGISTRY_CREDENTIALS = credentials('dockerhub')
-            }
-
             steps{
                 script {
-                    sh "docker build -t ${DOCKER_IMAGE} ."
-                    def dockerImage = docker.image("${DOCKER_IMAGE}")
-                        withCredentials([
-                            usernamePassword(credentials: 'dockerhub', usernameVariable: USER, passwordVariable: PWD)
-                        ]) {
-                        dockerImage.push() 
+                    docker.withRegistry('', DOCKER_PASS) {
+                        docker_image = docker.build "${IMAGE_NAME}"
+                    }
+
+                    docker.withRegistry('', DOCKER_PASS) {
+                        docker_image.push("${IMAGE_TAG}")
                     }
                 }
             }
