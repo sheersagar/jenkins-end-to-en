@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-custom-pipeline
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-custom-pipeline
+  template:
+    metadata:
+      labels:
+        app: my-custom-pipeline
+    spec:
+      containers:
+      - name: my-custom-pipeline
+        image: vishv3432/my-custom-pipeline:9
+        ports:
+        - containerPort: 8080
