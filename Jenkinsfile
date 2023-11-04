@@ -92,7 +92,7 @@ pipeline {
                 script {
                     sh 'docker build -t ${DOCKER_IMAGE} .'
                     def dockerImage = docker.image("${DOCKER_IMAGE}")
-                    docker.withRegistry('', REGISTRY_CREDENTIALS) {
+                    docker.withRegistry('', 'dockerhub') {
                         docker_Image.push()
                     }
                 }
