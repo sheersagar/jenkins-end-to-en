@@ -1,0 +1,37 @@
+pipeline:
+  identifier: Build_jenkins_end_to_en_1699831353964
+  name: Build jenkins-end-to-en
+  orgIdentifier: default
+  projectIdentifier: default_project
+  properties:
+    ci:
+      codebase:
+        build: <+input>
+        connectorRef: account.Github_OAuth_1699831298674
+        repoName: jenkins-end-to-en
+  stages:
+    - stage:
+        identifier: build
+        name: build
+        spec:
+          cloneCodebase: true
+          execution:
+            steps:
+              - step:
+                  identifier: dockerbuild
+                  name: docker_build
+                  spec:
+                    image: plugins/docker
+                    settings:
+                      dry_run: "true"
+                      repo: hello/world
+                      tags: latest
+                  timeout: ""
+                  type: Plugin
+          platform:
+            arch: Amd64
+            os: Linux
+          runtime:
+            spec: {}
+            type: Cloud
+        type: CI
