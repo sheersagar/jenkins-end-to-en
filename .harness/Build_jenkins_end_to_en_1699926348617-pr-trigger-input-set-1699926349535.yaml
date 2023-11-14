@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_jenkins_end_to_en_1699926348617-pr-trigger-input-set
+  identifier: Build_jenkins_end_to_en_1699926348617prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: rd
+  pipeline:
+    identifier: Build_jenkins_end_to_en_1699926348617
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
