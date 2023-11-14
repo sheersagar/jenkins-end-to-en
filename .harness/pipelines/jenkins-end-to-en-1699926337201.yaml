@@ -36,3 +36,4 @@ pipeline:
             type: Docker
             spec: {}
         type: CI
+  tags: {}
